@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark clipped-left elevation="2">
+      <v-app-bar-nav-icon @click="isSidebarCollapsed = !isSidebarCollapsed"></v-app-bar-nav-icon>
       <v-toolbar-title>
         Scio Code
       </v-toolbar-title>
@@ -11,7 +12,7 @@
         <v-icon>{{ isDark ? "mdi-weather-night" : "mdi-weather-sunny" }}</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer app clipped dark color="navDrawer">
+    <v-navigation-drawer app clipped dark color="navDrawer" :mini-variant="isSidebarCollapsed">
       <v-row no-gutters justify="center">
         <v-list width="100%" dense rounded>
           <v-list-item-group v-model="currentRoute">
@@ -19,9 +20,8 @@
                          v-bind:key="route.name"
                          @click="$router.push({path : route.path})"
                          :disabled="isCurrent(route)"
-                         style="width: 90%; margin: auto"
-                         dense
-                         class="mb-2">
+                         style="width: 100%;"
+                         class="mb-2 pl-2">
               <v-list-item-icon>
                 <v-icon>{{ route.icon }}</v-icon>
               </v-list-item-icon>
@@ -50,6 +50,7 @@ export default Vue.extend({
   data: () => {
     return {
       currentRoute: 0,
+      isSidebarCollapsed: false
     }
   },
   computed: {
@@ -72,9 +73,13 @@ export default Vue.extend({
       return this.$router.currentRoute.path === route.path
     }
   },
-  mounted() {
-    //set the initial route
-    this.currentRoute = this.routes?.findIndex(item => item.path === this.$router.currentRoute.path) ?? 0;
+  watch: {
+    '$route' (to) {
+      //update the current route when routing occurs. This does overwrite existing values done by the v-model (values will be equivalent) on the group
+      //but is needed in case of refreshing on pages that are not "/". Without this, even on mounted for App.vue the value for the current route
+      //will not be the route at the end of the refresh
+      this.currentRoute = this.routes?.findIndex(item => item.path === to.path) ?? 1;
+    }
   }
 });
 </script>

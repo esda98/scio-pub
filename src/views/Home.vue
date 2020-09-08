@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
-    <p>Hello!</p>
-  </div>
+  <v-container fluid>
+    <div class="home">
+      <p>Hello!</p>
+    </div>
+  </v-container>
 </template>
 
 <script lang="ts">

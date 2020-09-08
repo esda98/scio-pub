@@ -73,12 +73,17 @@ export default Vue.extend({
       return this.$router.currentRoute.path === route.path
     }
   },
+  mounted() {
+    //this one is here just in case the route doesn't get called before mounted does. This happens sometimes?
+    this.currentRoute = this.routes?.findIndex(item => item.path === this.$router.currentRoute.path) ?? 1;
+  },
   watch: {
     '$route' (to) {
       //update the current route when routing occurs. This does overwrite existing values done by the v-model (values will be equivalent) on the group
       //but is needed in case of refreshing on pages that are not "/". Without this, even on mounted for App.vue the value for the current route
       //will not be the route at the end of the refresh
       this.currentRoute = this.routes?.findIndex(item => item.path === to.path) ?? 1;
+      console.log('routed to: ', to);
     }
   }
 });

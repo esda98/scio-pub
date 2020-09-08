@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import ThemeEditor from "../views/ThemeEditor.vue";
 import NavItem from "@/classes/AppRoot/navItem";
 
 Vue.use(VueRouter);
@@ -21,6 +22,12 @@ const routes: Array<NavItem> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
     icon: "mdi-help"
+  },
+  {
+    path: "/theme-editor",
+    name: "Theme Editor",
+    component: ThemeEditor,
+    icon: "mdi-palette"
   }
 ];
 

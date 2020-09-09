@@ -14,7 +14,7 @@
     </v-app-bar>
     <v-navigation-drawer app clipped dark color="navDrawer" :mini-variant="isSidebarCollapsed">
       <v-row no-gutters justify="center">
-        <v-list width="100%" dense rounded>
+        <v-list width="100%" dense rounded class="mt-2">
           <v-list-item-group v-model="currentRoute">
             <v-list-item v-for="route in routes"
                          v-bind:key="route.name"

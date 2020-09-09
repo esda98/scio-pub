@@ -3,13 +3,22 @@
     <v-row>
       <v-col>
         <v-card>
+          <v-tooltip bottom nudge-top="30">
+            <template v-slot:activator="{ on, attrs }">
+              <v-card-title v-on="on" v-bind="attrs">
+                {{isDark ? 'Dark' : 'Light'}} Theme Colors
+              </v-card-title>
+            </template>
+            <span>Use the icon in the top right to change the theme!</span>
+          </v-tooltip>
+
           <v-list>
             <v-list-item  v-for="(x,key ) in (isDark ? $vuetify.theme.themes.dark : $vuetify.theme.themes.light)  " :key="key">
               <v-row dense>
                 <v-menu bottom offset-y :close-on-content-click="false" max-width="300px">
                   <template v-slot:activator="{ on }">
                     <v-col>
-                      <v-btn v-on="on" :style="`background-color:${x}; color:${getTextColorForHex(x)}`">{{ key }} : {{ x }}</v-btn>
+                      <v-btn v-on="on" :style="`background-color:${x}; color:${getTextColorForHex(x)}; width: 100%; height: 65px;`" class="mb-1">{{ key }} : {{ x }}</v-btn>
                     </v-col>
                   </template>
                   <v-color-picker :value="x" mode="hexa" @input="changeColor($event,key)"></v-color-picker>
@@ -19,7 +28,7 @@
           </v-list>
         </v-card>
       </v-col>
-      <v-col cols="4">
+      <v-col xs="12" md="6">
         <v-card>
           <v-card-title>Vuetify Theme Object</v-card-title>
           <pre class="px-4">{{themeObj}}</pre>

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ThemeEditor from "../views/ThemeEditor.vue";
 import NavItem from "@/classes/AppRoot/navItem";
+import TreeDemo from "@/views/TreeDemo.vue";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,12 @@ const routes: Array<NavItem> = [
     name: "Theme Editor",
     component: ThemeEditor,
     icon: "mdi-palette"
+  },
+  {
+    path: "/trees",
+    name: "Trees",
+    component: TreeDemo,
+    icon: "mdi-file-tree"
   }
 ];
 

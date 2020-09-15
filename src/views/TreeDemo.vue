@@ -10,10 +10,10 @@
             <v-btn style="width: 100%" @click="reset">Reset</v-btn>
           </v-col>
           <v-col cols="3" class="py-0 px-1">
-            <v-btn style="width: 100%">Sort</v-btn>
+            <v-btn style="width: 100%" @click="sortAll">Sort</v-btn>
           </v-col>
           <v-col cols="3" class="py-0 px-1 pr-2">
-            <v-btn style="width: 100%">Load</v-btn>
+            <v-btn style="width: 100%" disabled>Load</v-btn>
           </v-col>
 
         </v-row>
@@ -124,6 +124,11 @@ export default Vue.extend({
       selectedTree.addChild(newEmployeeObj);
       this.showAddDialog = false;
       this.showAddedBar = true;
+    },
+    sortAll() {
+      for (const r of this.rootNodes) {
+        r.sortByDisplay();
+      }
     }
   },
   watch: {

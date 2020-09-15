@@ -50,7 +50,11 @@ export default Vue.extend({
           new ScioCardData('Theme Editor',
               'This demo shows how to modify the current Vuetify theme colors with an interactive color picker in real time! It also outputs the object for easy dropping into the Vueitfy object',
             [new LinkButtonData('palette', 'Theme Editor', '/theme-editor', true)],
-          true)
+          true),
+          new ScioCardData('Tree Demo',
+            'This demo shows the power of the Tree Data structure!',
+          [new LinkButtonData('file-tree', 'Tree Demo', '/trees', true)],
+          true),
       ]
     }
   },

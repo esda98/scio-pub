@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark clipped-left elevation="2">
-      <v-app-bar-nav-icon @click="isSidebarCollapsed = !isSidebarCollapsed"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="toggleSidebar"></v-app-bar-nav-icon>
       <v-toolbar-title>
         Scio Code
       </v-toolbar-title>
@@ -12,7 +12,7 @@
         <v-icon>{{ isDark ? "mdi-weather-night" : "mdi-weather-sunny" }}</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer app clipped dark color="navDrawer" :mini-variant="isSidebarCollapsed">
+    <v-navigation-drawer app clipped dark color="navDrawer" :mini-variant="isSidebarCollapsed" v-model="showSidebar">
       <v-row no-gutters justify="center">
         <v-list width="100%" dense rounded class="mt-2">
           <v-list-item-group v-model="currentRoute">
@@ -50,7 +50,8 @@ export default Vue.extend({
   data: () => {
     return {
       currentRoute: 0,
-      isSidebarCollapsed: false
+      isSidebarCollapsed: false,
+      showSidebar: true,
     }
   },
   computed: {
@@ -66,11 +67,38 @@ export default Vue.extend({
       get() {
         return this.$router.options.routes;
       }
+    },
+    showMiniSidebar: {
+      get() {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs':
+            return false
+          case 'sm':
+            return false
+          case 'md':
+            return true
+          case 'lg':
+            return true
+          case 'xl':
+            return true
+          default:
+            return false;
+        }
+      }
     }
   },
   methods: {
     isCurrent(route: RouteConfig) {
       return this.$router.currentRoute.path === route.path
+    },
+    toggleSidebar() {
+      if (this.showMiniSidebar) {
+        this.isSidebarCollapsed = !this.isSidebarCollapsed;
+      } else {
+        this.isSidebarCollapsed = false;
+        this.showSidebar = true;
+      }
+      console.log('show sidebar: ', this.showSidebar)
     }
   },
   mounted() {

@@ -11,10 +11,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="2" d-flex flex-column>
+      <v-col cols="12" sm="4" md="2" d-flex flex-column>
         <div class="headline" style="height: 100%; display: flex; justify-content: center; align-items: center;">Demos:</div>
       </v-col>
-      <v-col cols="2" d-flex flex-column v-for="card in demoCards" v-bind:key="card.title">
+      <v-col cols="12" sm="4" md="3" lg="2" d-flex flex-column v-for="card in demoCards" v-bind:key="card.title">
         <scio-card :data="card"></scio-card>
       </v-col>
     </v-row>

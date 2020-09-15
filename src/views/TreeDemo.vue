@@ -1,27 +1,38 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" class="pt-0">
-        <v-row>
-          <v-col cols="3" class="py-0 px-1 pl-2">
-            <v-btn :disabled="selectedIndexes.length === 0" style="width: 100%" @click="showAddDialog = true">Add To Selected</v-btn>
-          </v-col>
-          <v-col cols="3" class="py-0 px-1">
-            <v-btn style="width: 100%" @click="reset">Reset</v-btn>
-          </v-col>
-          <v-col cols="3" class="py-0 px-1">
-            <v-btn style="width: 100%" @click="sortAll">Sort</v-btn>
-          </v-col>
-          <v-col cols="3" class="py-0 px-1 pr-2">
-            <v-btn style="width: 100%" disabled>Load</v-btn>
-          </v-col>
-
-        </v-row>
-      </v-col>
+      <v-treeview style="width: 100%" :items="rootNodes" item-children="children" item-key="name" item-text="displayLabel" activatable :active.sync="selectedIndexes">
+        <template v-slot:append="{ item }">
+          <v-btn icon @click="addTo(item)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+      </v-treeview>
     </v-row>
-    <v-row>
-      <v-treeview style="width: 100%" :items="rootNodes" item-children="children" item-key="name" item-text="displayLabel" activatable :active.sync="selectedIndexes"></v-treeview>
-    </v-row>
+    <v-speed-dial
+        v-model="speedDialOpen"
+        :bottom="true"
+        :right="true"
+        direction="top"
+        fixed
+        transition="slide-y-reverse-transition"
+    >
+      <template v-slot:activator>
+        <v-btn color="primary" dark fab>
+          <v-icon v-if="speedDialOpen">mdi-close</v-icon>
+          <v-icon v-else>mdi-dots-horizontal</v-icon>
+        </v-btn>
+      </template>
+      <v-btn fab dark small color="primary" @click="reset">
+        <v-icon>mdi-refresh</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="primary" @click="sortAll">
+        <v-icon>mdi-sort-alphabetical-ascending</v-icon>
+      </v-btn>
+<!--      <v-btn fab dark small color="indigo">-->
+<!--        <v-icon>mdi-download</v-icon>-->
+<!--      </v-btn>-->
+    </v-speed-dial>
     <v-dialog v-model="showAddDialog" max-width="500">
       <v-card>
         <v-card-title>New Employee</v-card-title>
@@ -75,7 +86,9 @@ export default Vue.extend({
       ],
       addValid: false,
       showNotUniqueMessage: false,
-      showAddedBar: false
+      showAddedBar: false,
+      addToTree: null as Tree<Employee> | null,
+      speedDialOpen: false
     }
   },
   mounted() {
@@ -106,20 +119,10 @@ export default Vue.extend({
         }
       }
       //new employee is unique, lets add them!
-      //find selected hierarchy
-      if (this.selectedIndexes.length != 1) { return; }
-      const selectedName = this.selectedIndexes[0];
-      let selectedTree: Tree<Employee> | null = null;
-      for (const r of this.rootNodes) {
-        const res = r.findByName(selectedName)
-        if (res) {
-          selectedTree = res
-          break;
-        }
-      }
-      if (!selectedTree) { return; }
+      //ensure the tree to add to is present and set
+      if (!this.addToTree) { return; }
       //got the selected tree, add this as a child
-      selectedTree.addChild(newEmployeeObj);
+      this.addToTree.addChild(newEmployeeObj);
       this.showAddDialog = false;
       this.showAddedBar = true;
     },
@@ -127,6 +130,11 @@ export default Vue.extend({
       for (const r of this.rootNodes) {
         r.sortByDisplay();
       }
+    },
+    // eslint-disable-next-line
+    addTo(item: any) {
+      this.addToTree = item;
+      this.showAddDialog = true;
     }
   },
   watch: {

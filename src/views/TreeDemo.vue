@@ -92,8 +92,6 @@ export default Vue.extend({
     },
     addEmployee() {
       this.showNotUniqueMessage = false;
-      console.log('Add: ', this.addFirstName, this.addLastName, this.addJobTitle);
-      console.log('Add to: ', this.selectedIndexes);
       // eslint-disable-next-line
       //@ts-ignore
       this.$refs.newEmployeeForm.validate();

@@ -93,7 +93,6 @@ export default Vue.extend({
   },
   methods: {
     changeColor(value: string, key: string) {
-      console.log(value, `this.$vuetify.theme.themes.dark.${key} `);
       if (this.$vuetify.theme.dark) {
         const updateStr = ` this.$vuetify.theme.themes.dark.${key} = '${value}'`;
         eval(updateStr);
@@ -101,7 +100,6 @@ export default Vue.extend({
         const updateStr = ` this.$vuetify.theme.themes.light.${key} = '${value}'`;
         eval(updateStr);
       }
-      console.log('After', `this.$vuetify.theme.themes.dark.${key}`)
     },
     getTextColorForHex(hex: string): string {
       const hexColor = Color(hex);
@@ -119,7 +117,6 @@ export default Vue.extend({
       }
     },
     async copyThemeObj() {
-      console.log('theme obj: ', this.themeObj);
       await this.$copyText(this.themeObj);
       this.showCopiedTextNotif = true;
     }
